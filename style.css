@@ -229,7 +229,7 @@ header{
 }
 
 .del-pop{
-    position: absolute;
+    position: fixed;
     top: 1rem;
     right:  1rem;
     background-color: transparent;
@@ -253,7 +253,7 @@ header{
         justify-content: center;
     }
     .meal-info{
-        width: 80vw;
+        width: 97vw;
         /* margin-right: 1rem; */
         /* padding: 1rem; */
         overflow: hidden;
