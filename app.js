@@ -4,6 +4,7 @@ const favContainer = document.querySelector('.fav-container');
 const popup = document.querySelector('.popup');
 const msg = document.querySelector('.msg');
 const searchBtn = document.getElementById("searchBtn");
+const mealInfoContainer = document.querySelector(".meal-info-container")
 
 getRandomRecipe()
 
@@ -29,7 +30,7 @@ async function getRandomRecipe(){
 async function getRecipeById(mealId){
     const res =await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
     const resData = await res.json();
-    // console.log(resData.meals[0]);   
+    console.log(resData.meals[0]);   
     showFavRecipe(resData.meals[0]);
 }
 
@@ -60,10 +61,19 @@ function showRecipe(mealData,random=false){
 
 <button class="fav-btn "><i class="far fa-heart"></i></button>
 </div>
-<p>${mealData.strInstructions.substring(0,200)}...<a target="_blank" href="${mealData.strSource}">Learn More</a></p>
+
 </div>
 
 `
+const img = meal.querySelector('img');
+const title = meal.querySelector('h4')
+img.addEventListener("click",()=>{
+    showMealInfo(mealData)
+})
+
+title.addEventListener("click",()=>{
+    showMealInfo(mealData)
+})
 const btn = meal.querySelector('.fav-btn');
 btn.addEventListener('click',()=>{
     if(!btn.classList.contains("active")){
@@ -74,6 +84,7 @@ btn.addEventListener('click',()=>{
         setTimeout(()=>{
             popup.classList.remove("show")
         },2000)
+        fetchFavMeals()
     }
     else{
         btn.classList.remove("active");
@@ -83,7 +94,10 @@ btn.addEventListener('click',()=>{
         setTimeout(()=>{
             popup.classList.remove("show")
         },2000)
+       fetchFavMeals()
     }
+
+ 
     
 })
 mealContainer.appendChild(meal)
@@ -92,9 +106,22 @@ mealContainer.appendChild(meal)
 function showFavRecipe(mealData){
     const favItem = document.createElement('div');
     favItem.classList.add("fav-item")
-    favItem.innerHTML=`<img src="${mealData.strMealThumb}" alt="Recipe">
-    <p class="small">${mealData.strMeal.substring(0,10)}...</p>`
+    favItem.innerHTML=`<div class="main_body"><img src="${mealData.strMealThumb}" alt="Recipe">
+    <p class="small">${mealData.strMeal.substring(0,10)}...</p>
+    </div>
+    <button class="del-btn"><i class="fas fa-times"></i></button>
+    `
     favContainer.appendChild(favItem)
+
+    const btn = favItem.querySelector(".del-btn");
+    btn.addEventListener("click",()=>{
+        removeToLs(mealData.idMeal);
+        fetchFavMeals()
+    })
+    const main_div =favItem.querySelector(".main_body");
+    main_div.addEventListener("click",()=>{
+        showMealInfo(mealData)
+    })
 }
 
 
@@ -135,3 +162,49 @@ function getFavRecipe(){
 
 
 
+
+
+ async  function fetchFavMeals() {
+    // clean the container
+    favContainer.innerHTML = "";
+
+    const mealIds = getToLs();
+
+    for (let i = 0; i < mealIds.length; i++) {
+        const mealId = mealIds[i];
+        console.log("IDS",mealId)
+        try{
+         
+    
+            showFavRecipe( getRecipeById(mealId))
+        }catch(e){
+            console.log(e)
+        }
+       ;
+    }
+}
+
+
+function showMealInfo(mealData){
+    mealInfoContainer.innerHTML = ""
+    const mealInfo = document.createElement("div")
+    mealInfo.classList.add("meal-info");
+
+    mealInfo.innerHTML=`  <div class="meal-info">
+    <button class="del-pop"><i class="fas fa-times"></i></button>
+    <h2>Meal Info</h2>
+    <div class="meal-info-header">
+        <img src="${mealData.strMealThumb}" alt="">
+    </div>
+    <div class="meal-info-body">
+        <p>${mealData.strInstructions}</p>
+    </div>`
+
+    const btn = mealInfo.querySelector(".del-pop");
+    btn.addEventListener("click",()=>{
+        mealInfoContainer.classList.add('hidden')
+    })
+
+    mealInfoContainer.appendChild(mealInfo);
+    mealInfoContainer.classList.remove("hidden")
+}

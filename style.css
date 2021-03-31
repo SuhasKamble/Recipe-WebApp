@@ -87,6 +87,7 @@ header{
    max-width: 100px;
    text-align: center;
    cursor: pointer;
+   position: relative;
 }
 
 .fav-item .small{
@@ -113,9 +114,11 @@ header{
     position: absolute;
     top: 2rem;
     left: 0rem;
-    border-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
     background: white;
     padding: 0.5rem;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.46);
 }
 
 .meal-body{
@@ -168,4 +171,91 @@ header{
 
 .meal-header h4{
     color: black;
+}
+
+
+.del-btn{
+    position: absolute;
+    top: 1rem;
+    right:0.5rem;
+    background-color: transparent;
+    border: none;
+    visibility: hidden;
+}
+
+.fav-item:hover > .del-btn{
+    visibility: visible;
+}
+
+
+.meal-info-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.46);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.meal-info{
+    width: 45vw;
+    background-color: white;
+    border-radius: 10px;
+    padding: 1rem 0;
+    /* padding: 1rem; */
+    position: relative;
+}
+
+.meal-info img{
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.meal-info-body{
+    height: 300px;
+    overflow-y: auto;
+    margin-top: 1rem;
+    padding: 1rem;
+    
+}
+
+.meal-info h2{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.del-pop{
+    position: absolute;
+    top: 1rem;
+    right:  1rem;
+    background-color: transparent;
+    font-size: 1.4rem;
+    border: none;
+    padding: 0.1rem;
+}
+
+.meal-info-container.hidden{
+    visibility: hidden;
+}
+
+
+@media(max-width:780px){
+    .meal-info img{
+        height: 200px;
+    }
+    .meal-info-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .meal-info{
+        width: 80vw;
+        /* margin-right: 1rem; */
+        /* padding: 1rem; */
+        overflow: hidden;
+    }
 }
